@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Week 02 - Decisions and Loops"
+		},
+		{
+			"path": "../../Week 03 - Functions and Modules"
+		},
+		{
+			"path": "../../Week 04 - Lists, Dictionaries and Files"
+		},
+		{
+			"path": "../../Week 05 - Classes and Objects"
+		},
+		{
+			"path": "../../Week 06 - Pandas"
+		},
+		{
+			"path": "../../Week 07 - Strings and Text Manipulation"
+		}
+	],
+	"settings": {}
+}
