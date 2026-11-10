@@ -1,0 +1,253 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Server Fleet Report
+# This script analyses server usage across different regions.
+
+# 1. Load and look at the data
+df = pd.read_csv("servers.csv")
+
+print("FIRST FIVE SERVERS:")
+print(df.head())
+
+print("\nDATA TYPES:")
+print(df.dtypes)
+
+print("\nNUMBER OF SERVERS:")
+print(len(df))
+
+print("\nNUMBER OF COLUMNS:")
+print(len(df.columns))
+
+
+# 2. Add a percent column
+df["percent"] = (df["used"] / df["total"]) * 100
+
+print("\nSERVER USAGE:")
+print(df[["server", "region", "percent"]])
+
+
+# 3. Filter servers at or above 90%
+over_limit = df[df["percent"] >= 90]
+
+print("\nSERVERS AT OR ABOVE 90%:")
+print(over_limit)
+
+print("\nNUMBER AT OR ABOVE 90%:")
+print(len(over_limit))
+
+
+# 4. Average percentage per region
+region_average = df.groupby("region")["percent"].mean()
+
+print("\nAVERAGE USAGE PER REGION:")
+print(region_average)
+
+
+# 5. Sort to find the most at-risk server
+sorted_servers = df.sort_values("percent", ascending=False)
+
+print("\nMOST AT-RISK SERVER:")
+print(sorted_servers.head(1))
+
+
+# 6. Classify each server
+df["status"] = df["percent"].apply(
+    lambda x: "OVER LIMIT" if x >= 95
+    else "WARNING" if x >= 90
+    else "OK"
+)
+
+print("\nSERVER STATUS:")
+print(df[["server", "percent", "status"]])
+
+
+# 7. Create a chart
+df["status"].value_counts().plot(kind="bar")
+
+plt.title("Number of Servers Per Status")
+plt.xlabel("Server Status")
+plt.ylabel("Number of Servers")
+plt.tight_layout()
+plt.savefig("server_status_chart.png")
+plt.close()
+
+
+# 8. Save OVER LIMIT servers
+at_risk = df[df["status"] == "OVER LIMIT"]
+
+at_risk.to_csv("servers_at_risk.csv", index=False)
+
+print("\nOVER LIMIT SERVERS SAVED TO servers_at_risk.csv")
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+
+
+
+# WEEK 6 - SURVEY RESULTS REPORT
+# AI / DATA SCIENCE
+
+# 1. Load and inspect data
+df = pd.read_csv("survey_results.csv")
+
+print("FIRST FIVE RESPONSES")
+print(df.head())
+
+print("\nDATA TYPES")
+print(df.dtypes)
+
+print("\nTOTAL RESPONSES:", len(df))
+
+# 2. Calculate unanswered percentage
+unanswered = df[df["answered"] == 0]
+
+unanswered_percentage = (
+    len(unanswered) / len(df)
+) * 100
+
+print("\nUNANSWERED RESPONSES:", len(unanswered))
+print("PERCENTAGE UNANSWERED:", unanswered_percentage, "%")
+
+# 3. Remove unanswered responses
+cleaned = df[df["answered"] == 1].copy()
+
+print("\nCLEANED DATA")
+print(cleaned)
+
+# 4. Average score per category
+category_average = cleaned.groupby(
+    "category"
+)["score"].mean()
+
+print("\nAVERAGE SCORE PER CATEGORY")
+print(category_average)
+
+# 5. Sort categories
+sorted_categories = category_average.sort_values(
+    ascending=False
+)
+
+print("\nCATEGORIES RANKED")
+print(sorted_categories)
+
+print("\nSTRONGEST CATEGORY")
+print(sorted_categories.head(1))
+
+# 6. Classify results
+cleaned["result"] = cleaned["score"].apply(
+    lambda x: "Pass" if x >= 60 else "Fail"
+)
+
+print("\nPASS AND FAIL RESULTS")
+print(cleaned[["category", "score", "result"]])
+
+# 7. Create chart
+cleaned["result"].value_counts().plot(kind="bar")
+
+plt.title("Survey Pass and Fail Results")
+plt.xlabel("Result")
+plt.ylabel("Number of Responses")
+plt.tight_layout()
+plt.savefig("survey_results_chart.png")
+plt.close()
+
+# 8. Save cleaned data
+cleaned.to_csv(
+    "survey_results_clean.csv",
+    index=False
+)
+
+print("\nSaved survey_results_clean.csv")
+
+# 9. Findings
+# Use the printed results to identify the strongest
+# category and percentage of unanswered responses.
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+
+
+
+# WEEK 6 - LOGIN ATTEMPTS REPORT
+# CYBER SECURITY
+
+# 1. Load and inspect data
+df = pd.read_csv("login_attempts.csv")
+
+print("FIRST FIVE LOGIN SESSIONS")
+print(df.head())
+
+print("\nDATA TYPES")
+print(df.dtypes)
+
+print("\nTOTAL LOGIN SESSIONS:", len(df))
+
+# 2. Find sessions with 3 or more failed attempts
+high_failures = df[df["failed"] >= 3]
+
+print("\nSESSIONS WITH 3 OR MORE FAILURES")
+print(high_failures)
+
+# 3. Total failed attempts per IP
+ip_failures = df.groupby("ip")["failed"].sum()
+
+print("\nTOTAL FAILURES PER IP")
+print(ip_failures)
+
+# 4. Sort IP addresses
+sorted_ips = ip_failures.sort_values(
+    ascending=False
+)
+
+print("\nIP ADDRESSES RANKED BY FAILURES")
+print(sorted_ips)
+
+print("\nIP WITH MOST FAILURES")
+print(sorted_ips.head(1))
+
+# 5. Identify suspicious sessions
+df["suspicious"] = df["failed"].apply(
+    lambda x: True if x >= 3 else False
+)
+
+print("\nSUSPICIOUS LOGIN SESSIONS")
+print(df[["ip", "attempts", "failed", "suspicious"]])
+
+# 6. Create chart
+ip_failures.plot(kind="bar")
+
+plt.title("Failed Login Attempts Per IP")
+plt.xlabel("IP Address")
+plt.ylabel("Total Failed Attempts")
+plt.tight_layout()
+plt.savefig("login_attempts_chart.png")
+plt.close()
+
+# 7. Save suspicious sessions
+suspicious_sessions = df[
+    df["suspicious"] == True
+]
+
+suspicious_sessions.to_csv(
+    "flagged_ips.csv",
+    index=False
+)
+
+print("\nSaved flagged_ips.csv")
+
+# 8. Findings
+# Use the printed results to identify which IP
+# has the most total failures and why it is suspicious.

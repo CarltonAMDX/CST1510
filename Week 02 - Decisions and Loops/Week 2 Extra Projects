@@ -1,0 +1,118 @@
+# Python Pizza
+
+print("Welcome to Python Pizza!")
+
+size = input("What size pizza do you want? S, M or L: ").upper()
+pepperoni = input("Do you want pepperoni? Y or N: ").upper()
+extra_cheese = input("Do you want extra cheese? Y or N: ").upper()
+
+bill = 0
+
+if size == "S":
+    bill = 15
+elif size == "M":
+    bill = 20
+elif size == "L":
+    bill = 25
+else:
+    print("Invalid pizza size!")
+
+if size == "S":
+    if pepperoni == "Y":
+        bill += 2
+elif size == "M" or size == "L":
+    if pepperoni == "Y":
+        bill += 3
+
+if extra_cheese == "Y":
+    bill += 1
+
+print(f"Your final bill is: ${bill}.")
+
+
+# Treasure Island
+
+print("Welcome to Treasure Island!")
+print("Your mission is to find the treasure.")
+
+choice1 = input("You are at a crossroads. Left or right? ").lower()
+
+if choice1 == "left":
+    choice2 = input("You reach a lake. Swim or wait? ").lower()
+
+    if choice2 == "wait":
+        choice3 = input("Three doors appear: red, blue or yellow. Which one? ").lower()
+
+        if choice3 == "yellow":
+            print("You found the treasure! You win!")
+        elif choice3 == "red":
+            print("You entered a room of fire. Game over!")
+        elif choice3 == "blue":
+            print("You were eaten by a dragon. Game over!")
+        else:
+            print("You chose a door that doesn't exist. Game over!")
+
+    else:
+        print("You were attacked by a crocodile. Game over!")
+
+else:
+    print("You fell into a hidden trap. Game over!")
+
+    
+    
+      # Higher or Lower
+
+account1 = "Instagram"
+followers1 = 500
+
+account2 = "TikTok"
+followers2 = 800
+
+while True:
+    print(f"Which has more followers?")
+    print(f"1. {account1}")
+    print(f"2. {account2}")
+
+    guess = input("Enter 1 or 2 (or quit): ").lower()
+
+    if guess == "quit":
+        print("Thanks for playing!")
+        break
+
+    elif guess == "1":
+        if followers1 > followers2:
+            print("Correct!")
+        else:
+            print("Wrong!")
+
+    elif guess == "2":
+        if followers2 > followers1:
+            print("Correct!")
+        else:
+            print("Wrong!")
+
+    else:
+        print("Invalid choice. Try again.")
+
+        # Number Guessing Game
+
+secret_number = 27
+attempts = 0
+
+print("Welcome to the Number Guessing Game!")
+print("I'm thinking of a number between 1 and 100.")
+
+while True:
+    guess = int(input("Make a guess: "))
+    attempts += 1
+
+    if guess > secret_number:
+        print("Too high. Try again!")
+
+    elif guess < secret_number:
+        print("Too low. Try again!")
+
+    else:
+        print("Correct! You guessed the number!")
+        print(f"It took you {attempts} guesses.")
+        break

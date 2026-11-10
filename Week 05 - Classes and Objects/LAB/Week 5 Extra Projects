@@ -1,0 +1,122 @@
+# Blackjack - Object-Oriented Programming
+
+import random
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+
+# Hand class
+class Hand:
+
+    def __init__(self):
+        self.cards = []
+
+    def add_card(self):
+        card = random.choice(cards)
+        self.cards.append(card)
+
+    def score(self):
+
+        total = sum(self.cards)
+
+        # Adjust ace from 11 to 1 if the hand would bust
+        while total > 21 and 11 in self.cards:
+            self.cards[self.cards.index(11)] = 1
+            total = sum(self.cards)
+
+        # Blackjack
+        if total == 21 and len(self.cards) == 2:
+            return 0
+
+        return total
+
+
+# Compare scores
+def compare(user_score, computer_score):
+
+    if user_score == computer_score:
+        return "Draw!"
+
+    elif computer_score == 0:
+        return "Computer has Blackjack. You lose!"
+
+    elif user_score == 0:
+        return "You have Blackjack. You win!"
+
+    elif user_score > 21:
+        return "You went over 21. You lose!"
+
+    elif computer_score > 21:
+        return "Computer went over 21. You win!"
+
+    elif user_score > computer_score:
+        return "You win!"
+
+    else:
+        return "You lose!"
+
+
+# Game
+def play_game():
+
+    user_hand = Hand()
+    computer_hand = Hand()
+
+    # Deal two cards each
+    for _ in range(2):
+        user_hand.add_card()
+        computer_hand.add_card()
+
+    game_over = False
+
+    while not game_over:
+
+        user_score = user_hand.score()
+        computer_score = computer_hand.score()
+
+        print(f"\nYour cards: {user_hand.cards}")
+        print(f"Your score: {user_score}")
+
+        print(f"Computer's first card: {computer_hand.cards[0]}")
+
+        if user_score == 0 or computer_score == 0 or user_score > 21:
+            game_over = True
+
+        else:
+            choice = input("Type 'y' to get another card, or 'n' to pass: ").lower()
+
+            if choice == "y":
+                user_hand.add_card()
+
+            else:
+                game_over = True
+
+    # Dealer plays until reaching 17
+    while computer_hand.score() != 0 and computer_hand.score() < 17:
+        computer_hand.add_card()
+
+    # Final scores
+    print(f"\nYour final hand: {user_hand.cards}")
+    print(f"Your final score: {user_hand.score()}")
+
+    print(f"Computer's final hand: {computer_hand.cards}")
+    print(f"Computer's final score: {computer_hand.score()}")
+
+    print(compare(user_hand.score(), computer_hand.score()))
+
+
+# Start game
+while input("\nDo you want to play Blackjack? Type 'y' or 'n': ").lower() == "y":
+    play_game()
+
+
+    # Testing the Hand class
+
+test_hand = Hand()
+
+test_hand.add_card()
+test_hand.add_card()
+test_hand.add_card()
+
+print("Cards:", test_hand.cards)
+print("Score:", test_hand.score())
